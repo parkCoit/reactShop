@@ -1,0 +1,22 @@
+input {
+    margin-bottom: 20px;
+}
+
+.alert {
+    background-color: rgb(27, 181, 189);
+}
+
+.center {
+    text-align: center;
+    padding: 40px 0;
+
+}
+
+.start {
+    opacity: 0;
+}
+
+.end {
+    opacity: 1;
+    transition: 2s;
+}

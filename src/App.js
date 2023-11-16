@@ -9,7 +9,7 @@ import Detail from './pages/Detail/Detail';
 
 function App() {
   
-  let [shoes] = useState(data)
+  let [shoes, setShoes] = useState(data)
   let navigate = useNavigate()
 
   return (
@@ -28,7 +28,7 @@ function App() {
 
 
       <Routes>
-        <Route path='/' element={<Main data={shoes}/>} />
+        <Route path='/' element={<Main data={shoes} setData={setShoes}/>} />
         <Route path='*' element={<div>없는 페이지</div>} />
         <Route path='/detail/:id' element={<Detail data={shoes}/>} />
         <Route path='event' element={<Event/>}>

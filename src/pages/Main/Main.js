@@ -1,6 +1,6 @@
-
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button} from 'react-bootstrap';
 import './Main.css'
+import axios from 'axios'
 
 function Main (props) {
 
@@ -13,15 +13,22 @@ function Main (props) {
                     {
                     props.data.map(function(data ,i) {
                         return(
-                            <Col key={i} sm>
+                            <Col key={i} xs={4}>
                                 <img src= {'https://codingapple1.github.io/shop/shoes'+ (i+1) +'.jpg'} width="80%"/>
                                 <h4> { data.title } </h4>
                                 <p> { data.price } </p>
                             </Col>
                         )
-                    })
+                    })  
                     }
                 </Row>
+                <Button onClick={() => {
+                    axios.get('https://codingapple1.github.io/shop/data2.json')
+                    .then((result) => {
+                        let copy = [...props.data, ...result.data]
+                        props.setData(copy)     
+                    })
+                }}>더보기</Button>
             </Container>
         </div>
     )
