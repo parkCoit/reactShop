@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import { Route, Routes, useNavigate, Outlet} from "react-router-dom";
 import { Container, Nav, Navbar} from 'react-bootstrap';
 import './App.css';
 import data from './data.js'
 import Main from './pages/Main/Main';
 import Detail from './pages/Detail/Detail';
+import Cart from './pages/Cart/Cart';
 
+export let Context1 = createContext();
 
 function App() {
   
@@ -30,7 +32,13 @@ function App() {
       <Routes>
         <Route path='/' element={<Main data={shoes} setData={setShoes}/>} />
         <Route path='*' element={<div>없는 페이지</div>} />
-        <Route path='/detail/:id' element={<Detail data={shoes}/>} />
+        <Route path='/detail/:id' element={
+          <Context1.Provider> 
+            <Detail data={shoes}/>
+          </Context1.Provider>
+        } />
+        <Route path='/cart' element={<Cart/>} />
+
         <Route path='event' element={<Event/>}>
           <Route path='one' element={<p>첫 주문시 양배추즙 서비스</p>} />
           <Route path='two' element={<p>생일기념 쿠폰받기</p>}/>

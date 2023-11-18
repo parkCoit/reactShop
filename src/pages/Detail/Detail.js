@@ -1,9 +1,11 @@
-import { useEffect, useState, React } from 'react'
+import { useEffect, useState, React, useContext } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Link, useParams} from 'react-router-dom';
 import './Detail.css'
-import styled from 'styled-components'
+import TabContent from './TapContent/index.js';
+import { addProduct } from './../../store/userSlice.js'
+import { useDispatch } from 'react-redux';
 
 
 
@@ -13,17 +15,18 @@ function Detail(props) {
     let [sale, setSale] = useState(true)
     let [str, setStr] = useState('')
     let [tab, setTab] = useState(0)
-    let [fade, setFade] = useState('')
     let [fade2, setFade2] = useState('')
+
+    let dispatch = useDispatch()
  
     let {id} = useParams(0)
     id = Number(id)
 
-    let tabArr = [<div>내용 1</div>, <div>내용 2</div>, <div>내용 3</div>]
-
     let find = props.data.find(function(x){
         return (x.id === id)
     });
+
+    
 
     useEffect(() => {
         let time = setTimeout(() => {setSale(false)}, 2000)
@@ -38,13 +41,6 @@ function Detail(props) {
             alert('문자를 입력하세요')
         }
     }, [str] )
-
-    useEffect( () => {
-        setTimeout(() => {setFade('end')}, 100)
-        return () => {
-            setFade('')
-        }
-    }, [tab] )
 
     useEffect( () => {
         setFade2('end')
@@ -69,7 +65,9 @@ function Detail(props) {
                     <p> { find.content } </p>
                     <p> ₩{ find.price } </p>
                     <input type='text' placeholder='문자만 입력 하세요' onChange={(e) => {setStr(e.target.value)}} />
-                    <Button variant="outline-primary">주문하기</Button>
+                    <Link to='/cart'> 
+                        <Button onClick={ () => { dispatch(addProduct(find)) } } variant="outline-primary">주문하기</Button>
+                    </Link>
                 </Col>
             </Row>
             <div>
@@ -85,7 +83,7 @@ function Detail(props) {
                     </Nav.Item>
                 </Nav>
             </div>
-            <div className={'start ' + fade} > {tabArr[tab]} </div>
+            <TabContent tab={tab} shoes={props.data}/>
         </Container>
     )
 }

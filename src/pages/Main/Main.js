@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button} from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './Main.css'
 import axios from 'axios'
 
