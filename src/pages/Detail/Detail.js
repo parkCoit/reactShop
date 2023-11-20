@@ -26,6 +26,16 @@ function Detail(props) {
         return (x.id === id)
     });
 
+    useEffect(() => {
+        let storage = localStorage.getItem('watched')
+        storage = JSON.parse(storage)
+        storage.push(find.id)
+        storage = new Set(storage)
+        storage = Array.from(storage)
+        localStorage.setItem('watched', JSON.stringify(storage))
+    }, [])
+    
+
     
 
     useEffect(() => {
@@ -58,8 +68,9 @@ function Detail(props) {
             }
             <Row>
                 <Col>
-                    <img src= {'https://codingapple1.github.io/shop/shoes'+(id+1)+'.jpg'} width="80%"/>
+                        <img src= {'https://codingapple1.github.io/shop/shoes'+(id+1)+'.jpg'} width="80%" />
                 </Col>
+                
                 <Col className='center'>
                     <h4> { find.title } </h4>
                     <p> { find.content } </p>

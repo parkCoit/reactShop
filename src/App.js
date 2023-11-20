@@ -6,13 +6,23 @@ import data from './data.js'
 import Main from './pages/Main/Main';
 import Detail from './pages/Detail/Detail';
 import Cart from './pages/Cart/Cart';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
-export let Context1 = createContext();
+export let Context = createContext();
 
 function App() {
   
   let [shoes, setShoes] = useState(data)
   let navigate = useNavigate()
+
+  
+  let result = useQuery({
+    queryKey : ['작명'],
+    queryFn : () => axios.get('https://codingapple1.github.io/userdata.json').
+    then( (a) => { return a.data}),
+    
+  })
 
   return (
     <div className="App">
@@ -20,22 +30,30 @@ function App() {
 
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
+
           <Navbar.Brand href="#home">ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={ () => {navigate('/')} }>Home</Nav.Link>
-            <Nav.Link href="/detail">Detail</Nav.Link>
+            <Nav.Link href="/cart">Cart</Nav.Link>
           </Nav>
+          <Nav className='ms-auto text-color'>
+          { result.isLoading ? '로딩중' :
+            result.error ? '에러남' :
+            result.data ? result.data.name : ''}
+          </Nav>
+
         </Container>
       </Navbar> 
 
 
       <Routes>
+
         <Route path='/' element={<Main data={shoes} setData={setShoes}/>} />
         <Route path='*' element={<div>없는 페이지</div>} />
         <Route path='/detail/:id' element={
-          <Context1.Provider> 
+          <Context.Provider value={shoes}> 
             <Detail data={shoes}/>
-          </Context1.Provider>
+          </Context.Provider>
         } />
         <Route path='/cart' element={<Cart/>} />
 
@@ -43,6 +61,7 @@ function App() {
           <Route path='one' element={<p>첫 주문시 양배추즙 서비스</p>} />
           <Route path='two' element={<p>생일기념 쿠폰받기</p>}/>
         </Route>
+
       </Routes>
     
     </div>
